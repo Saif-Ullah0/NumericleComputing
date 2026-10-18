@@ -1,0 +1,13 @@
+# Coursework materials
+/HW/
+/LECTURES/
+
+# Local Python environment and generated cache
+/.venv/
+__pycache__/
+*.py[cod]
+
+# Test and tool caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
