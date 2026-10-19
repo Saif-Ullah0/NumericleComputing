@@ -1,6 +1,17 @@
-import numpy as np
+from math import isfinite
+from numbers import Integral, Real
+
+
+def _validate_options(tol, max_iter, criterion):
+    if isinstance(tol, bool) or not isinstance(tol, Real) or not isfinite(tol) or tol <= 0:
+        raise ValueError("tol must be a finite positive number")
+    if isinstance(max_iter, bool) or not isinstance(max_iter, Integral) or max_iter <= 0:
+        raise ValueError("max_iter must be a positive integer")
+    if not isinstance(criterion, str) or criterion not in ("f", "step", "rel"):
+        raise ValueError("criterion must be 'f', 'step', or 'rel'")
 
 def bisection(f, a, b, tol=1e-6, max_iter=100, criterion='f'):
+    _validate_options(tol, max_iter, criterion)
     if f(a) * f(b) > 0:
         raise ValueError("f(a) and f(b) must have opposite signs")
     history = []
@@ -26,6 +37,7 @@ def bisection(f, a, b, tol=1e-6, max_iter=100, criterion='f'):
     return p, max_iter, history
 
 def fixed_point(g, x0, tol=1e-6, max_iter=100, criterion='f'):
+    _validate_options(tol, max_iter, criterion)
     history = []
     x = x0
     for i in range(1, max_iter + 1):
@@ -44,6 +56,7 @@ def fixed_point(g, x0, tol=1e-6, max_iter=100, criterion='f'):
     return x, max_iter, history
 
 def newton(f, df, x0, tol=1e-6, max_iter=100, criterion='f'):
+    _validate_options(tol, max_iter, criterion)
     history = []
     x = x0
     for i in range(1, max_iter + 1):
@@ -66,6 +79,7 @@ def newton(f, df, x0, tol=1e-6, max_iter=100, criterion='f'):
     return x, max_iter, history
 
 def regula_falsi(f, x0, x1, tol=1e-6, max_iter=100, criterion='f'):
+    _validate_options(tol, max_iter, criterion)
     if f(x0) * f(x1) > 0:
         raise ValueError("f(x0) and f(x1) must have opposite signs")
     history = []
@@ -92,6 +106,7 @@ def regula_falsi(f, x0, x1, tol=1e-6, max_iter=100, criterion='f'):
     return p, max_iter, history
 
 def secant(f, x0, x1, tol=1e-6, max_iter=100, criterion='f'):
+    _validate_options(tol, max_iter, criterion)
     history = []
     q0 = f(x0)
     q1 = f(x1)
